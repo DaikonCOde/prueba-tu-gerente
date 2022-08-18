@@ -38,5 +38,5 @@ Prueba técnica de tu gerente utilizando React y Docker
   *Pop-up*
   ![Imagen del inicio de la apicaión](https://raw.githubusercontent.com/DaikonCOde/prueba-tu-gerente/main/src/assets/pop-up.png)
 
-  *Pop-up*
+  *Contenedor de docker*
   ![Imagen del inicio de la apicaión](https://raw.githubusercontent.com/DaikonCOde/prueba-tu-gerente/main/src/assets/docker.png)

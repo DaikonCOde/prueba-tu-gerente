@@ -1,55 +1,59 @@
-import { collection, getDocs, query, where, limit, startAfter } from "firebase/firestore"; 
-import {db} from '../db/config';
+import { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore"; 
+import {firestore} from '../db/config';
 
+export const useGetUsers = () => {
+  const [ list, setList] = useState([]);
+  const [ exportList, setExportList] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(false);
 
-const firstPage = (filterBy, value) => {
-  const q = query(
-      collection(db, 'users'), 
-      where(filterBy, '>=', value.toLowerCase() ), 
-      where(filterBy, '<=', value.toLowerCase() + '~'),
-      limit(20) 
-      )
-  return q
-}
-
-const nextPage = (filterBy, value, lastVisible) => {
-  const q = query(
-    collection(db, 'users'), 
-    where(filterBy, '>=', value.toLowerCase() ), 
-    where(filterBy, '<=', value.toLowerCase() + '~'),
-    startAfter(lastVisible),
-    limit(20) 
-  )
-
-  return q
-}
-
-
-export const getFilteredData = async(filterBy, value,lastVisible, setLastVisible) => {
-  try {
-    let q;
-    if ( !lastVisible ) {
-      q = firstPage(filterBy, value)
-    } else {
-      q = nextPage(filterBy, value, lastVisible)
-    }
-    
-    const querySnapshot = await getDocs(q);
-
-    setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1])
-
-    const result = [] 
-    querySnapshot.forEach((doc) => {
-      result.push({
+  const getUsers = async() => {
+    try {
+      setIsLoading(true);
+      const ref = collection(firestore, 'users');
+      
+      const querySnapshot = await getDocs(ref);
+  
+      const result = [] 
+      querySnapshot.forEach((doc) => {
+        const obj = {
+          ...doc.data(),
           id: doc.id,
+        }
+
+        obj.answers = Object.values(obj.answers);
+        result.push(obj);
+      });
+
+      const resultExportList = [] 
+
+      querySnapshot.forEach((doc) => {
+        const obj = {
           ...doc.data()
         }
-      ) 
-    });
 
-    return result;
-    
-  } catch (error) {
-    throw error
+        delete obj.id;
+        delete obj.acceptTerms;
+        delete obj.reply_email;
+        delete obj.answers;
+        delete obj.images
+        
+        resultExportList.push(obj)
+      })
+  
+      setList(result)
+      setExportList(resultExportList)
+      setIsLoading(false)
+      
+    } catch (error) {
+      setIsLoading(false)
+      throw error
+    }
   }
+
+  useEffect(() => {
+    getUsers()
+  }, [])
+
+  return [ list, exportList,isLoading ]
 }

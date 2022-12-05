@@ -1,5 +1,5 @@
 import { collection, doc, setDoc } from "firebase/firestore"; 
-import { db } from "../db/config";
+import { firestore } from "../db/config";
 
 export const setNewUser = async(data) => {
   

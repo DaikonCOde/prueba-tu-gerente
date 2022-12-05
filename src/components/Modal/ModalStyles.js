@@ -9,25 +9,45 @@ export const ContentModal = styled.div`
   z-index: 99;
 
   .modal {
-    width: 500px;
-    height: 600px;
+    width: 600px;
+    height: 800px;
     background: #fff;
     z-index: 100;
     position: relative;
-    top: calc(50% - 300px);
-    left: calc(50% - 250px);
+    top: calc(50% - 400px);
+    left: calc(50% - 300px);
     padding: 40px 20px;
     border-radius: 20px;
     border: 1px solid #ddd;
+
+    .body {
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 720px;
+      &::-webkit-scrollbar {
+        width: 5px;
+        background: #fff;
+      }
+      &::-webkit-scrollbar-thumb {
+        width: 5px;
+        background: #eee;
+        border-radius: 3px
+      }
+    }
 
     .title {
       text-align: center;
       margin: 0 0 20px;
     }
 
+    .content-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px
+    }
+
     .field {
-      width: 300px;
-      margin: 0 auto 20px;
+      width: 250px;
 
       label {
         display: block;
@@ -44,19 +64,35 @@ export const ContentModal = styled.div`
         text-transform: capitalize;
       }
     }
-    button {
-      border: none;
-      background: linear-gradient(30deg, rgba(28,56,121,1) 0%, rgba(28,56,121,1) 100%);;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 10px;
-      display: block;
-      width: 300px;
-      margin: 40px auto 20px;
-      font-weight: 600;
-      transition: all .5s linear;
-      &:hover {
-        background: linear-gradient(30deg, rgba(28,56,121,1) 48%, rgba(96,126,170,1) 100%);
+
+    .list-answer {
+      
+      .list {
+        margin: 0 0 10px;
+        .label {
+          display:block;
+          font-weight: 700;
+          margin: 0 0 5px 0;
+          font-size: 12px;
+        }
+        .answer {
+          font-size: 10px;
+        }
+
+      }
+    }
+
+    .list-image {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+
+      img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
       }
     }
 
